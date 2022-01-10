@@ -1,8 +1,11 @@
 package com.example.TransfertNational.service.Implementation;
 
 import com.example.TransfertNational.dto.TransactionDto;
+import com.example.TransfertNational.exceptions.SoldeInsuffisantException;
 import com.example.TransfertNational.mapper.TransactionMapper;
+import com.example.TransfertNational.model.Client;
 import com.example.TransfertNational.model.Transaction;
+import com.example.TransfertNational.repository.ClientRepository;
 import com.example.TransfertNational.repository.TransactionRepository;
 import com.example.TransfertNational.service.ITransactionService;
 import org.springframework.stereotype.Service;
@@ -13,8 +16,11 @@ import java.util.List;
 public class TransactionService implements ITransactionService {
     private final TransactionRepository transactionRepository;
 
-    public TransactionService(TransactionRepository transactionRepository){
+    private final ClientRepository clientRepository;
+
+    public TransactionService(TransactionRepository transactionRepository, ClientRepository clientRepository){
         this.transactionRepository=transactionRepository;
+        this.clientRepository = clientRepository;
     }
     @Override
     public List<TransactionDto> getTransactions() {
@@ -29,7 +35,9 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public TransactionDto postTransaction(TransactionDto transactionDto) throws Exception {
+    public TransactionDto postTransaction(TransactionDto transactionDto) throws Exception, SoldeInsuffisantException {
+        ChangerSolde(transactionDto);
+
         Transaction transaction = new Transaction();
         transaction.setTypeTransfert(transactionDto.getTypeTransfert());
         transaction.setNotification(transactionDto.isNotification());
@@ -45,5 +53,16 @@ public class TransactionService implements ITransactionService {
 
         Transaction addedTr = transactionRepository.save(transaction);
         return TransactionMapper.mapToDto(addedTr);
+    }
+
+    public void ChangerSolde(TransactionDto transactionDto){
+        Client client = clientRepository.findClientByGsm(transactionDto.getNumTele());
+        Double soldeAct = Double.parseDouble(client.getSolde());
+        Double montant = transactionDto.getMontant();
+        if((soldeAct - montant)>=0){
+            client.setSolde(Double.toString(soldeAct - montant));
+        }else{
+            throw new SoldeInsuffisantException("Votre solde est insuffisant");
+        }
     }
 }

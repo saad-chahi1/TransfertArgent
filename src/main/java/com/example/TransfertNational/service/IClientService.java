@@ -8,5 +8,6 @@ public interface IClientService {
     List<ClientDto> getClients();
     ClientDto getClient(int Id);
     ClientDto getClientByCin(String Cin);
+    ClientDto getClientByGsm(String Gsm);
     ClientDto postClient(ClientDto clientDto) throws Exception;
 }

@@ -26,6 +26,7 @@ public class ClientDto {
     private String Profession;
     private String Nationalite;
     private String PaysAdresse;
+    private String Solde;
     private String AdresseLegale;
     private String Ville;
     private String Gsm;

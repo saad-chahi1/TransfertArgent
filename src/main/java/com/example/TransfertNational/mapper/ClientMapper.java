@@ -15,6 +15,7 @@ public class ClientMapper {
                 .Cin(client.getCin())
                 .DateNaissance(client.getCin())
                 .Gsm(client.getGsm())
+                .Solde(client.getSolde())
                 .Email(client.getEmail())
                 .Nationalite(client.getNationalite())
                 .NumPI(client.getNumPI())

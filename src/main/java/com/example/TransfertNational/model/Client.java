@@ -32,6 +32,7 @@ public class Client {
     private String Nationalite;
     private String PaysAdresse;
     private String AdresseLegale;
+    private String Solde;
     private String Ville;
     private String Gsm;
     private String Email;

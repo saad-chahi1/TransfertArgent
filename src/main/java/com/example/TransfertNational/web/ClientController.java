@@ -25,6 +25,10 @@ public class ClientController {
     @GetMapping("/{cin}")
     public ClientDto GetClientByCin(@RequestParam(value="cin") String cin){ return clientService.getClientByCin(cin); }
 
+    //Pour débit de compte
+    @GetMapping("/{gsm}")
+    public ClientDto GetClientByGsm(@RequestParam(value="gsm") String gsm){ return clientService.getClientByGsm(gsm); }
+
     @PostMapping
     public ClientDto Poster(@RequestBody ClientDto clientDto) throws Exception {
         return clientService.postClient(clientDto);

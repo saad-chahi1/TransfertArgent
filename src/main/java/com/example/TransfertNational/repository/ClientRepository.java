@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface ClientRepository extends JpaRepository<Client, Integer> {
     @Query("SELECT c FROM Client c WHERE c.Cin= ?1")
     Client findClientByCin(String Cin);
+
+    @Query("SELECT c FROM Client c WHERE c.Gsm= ?1")
+    Client findClientByGsm(String Gsm);
 }

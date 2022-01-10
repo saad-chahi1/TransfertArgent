@@ -37,6 +37,12 @@ public class ClientService implements IClientService {
     }
 
     @Override
+    public ClientDto getClientByGsm(String Gsm) {
+        Client client = clientRepository.findClientByGsm(Gsm);
+        return ClientMapper.mapToDto(client);
+    }
+
+    @Override
     public ClientDto postClient(ClientDto clientDto) throws Exception {
         Client client = new Client();
         client.setTypeTransfert(clientDto.getTypeTransfert());
