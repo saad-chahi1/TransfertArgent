@@ -1,22 +1,17 @@
-package com.example.TransfertNational.model;
+package com.example.TransfertNational.dto;
 
-import lombok.AllArgsConstructor;
+import com.example.TransfertNational.model.Beneficiaire;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@Data @Entity
-@AllArgsConstructor @NoArgsConstructor @ToString
-public class Client {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int Id;
+@Data
+@Builder
+public class ClientDto {
     private String TypeTransfert;
     private String TypePiece;
     private String Cin;
@@ -35,7 +30,7 @@ public class Client {
     private String Ville;
     private String Gsm;
     private String Email;
-    @OneToMany(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+
     private Set<Beneficiaire> Beneficiares;
+    
 }
