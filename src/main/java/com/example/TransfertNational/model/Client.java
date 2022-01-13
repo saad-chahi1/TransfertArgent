@@ -6,37 +6,40 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Data @Entity
 @AllArgsConstructor @NoArgsConstructor @ToString
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int Id;
-    private String TypeTransfert;
-    private String TypePiece;
-    private String Cin;
+    private int id;
+    private String typeTransfert;
+    private String typePiece;
+    private String cin;
 
-    private String Sexe;
-    private String Prenom;
-    private String TypePieceIdentite;
-    private String PaysEmission;
-    private String NumPI;
-    private String ValiditePI;
-    private String DateNaissance;
-    private String Profession;
-    private String Nationalite;
-    private String PaysAdresse;
-    private String AdresseLegale;
-    private String Solde;
-    private String Ville;
-    private String Gsm;
-    private String Email;
-    @OneToMany(fetch = FetchType.LAZY,
+    private String sexe;
+    private String prenom;
+    private String typePieceIdentite;
+    private String paysEmission;
+    private String numPI;
+    private String validitePI;
+    private String dateNaissance;
+    private String profession;
+    private String nationalite;
+    private String paysAdresse;
+    private String adresseLegale;
+    private String ville;
+    private String gsm;
+    private String email;
+
+    @OneToMany(targetEntity = Beneficiaire.class,
             cascade = CascadeType.ALL)
-    private Set<Beneficiaire> Beneficiares;
+    @JoinColumn(name = "beneficiare_id", referencedColumnName = "id")
+    private List<Beneficiaire> beneficiares;
+
+    @OneToOne(targetEntity = ComptePaiement.class,
+            cascade = CascadeType.ALL)
+    @JoinColumn(name = "comptePaiement_id", referencedColumnName = "id")
+    private ComptePaiement comptePaiement;
 }

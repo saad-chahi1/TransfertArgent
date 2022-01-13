@@ -10,6 +10,7 @@ import com.example.TransfertNational.repository.TransactionRepository;
 import com.example.TransfertNational.service.ITransactionService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,34 +36,56 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
+    public TransactionDto getTransactionByOtp(String otp) {
+        Transaction transaction = transactionRepository.findTransactionByOtp(otp);
+        return  TransactionMapper.mapToDto(transaction);
+    }
+
+    @Override
     public TransactionDto postTransaction(TransactionDto transactionDto) throws Exception, SoldeInsuffisantException {
-        ChangerSolde(transactionDto);
+        if(transactionDto.getTypeTransfert()=="Débit de compte du client"){
+            EditClientSolde(transactionDto);
+        }else if(transactionDto.getTypeTransfert()=="En espèce"){
+            EditAgentSolde(transactionDto);
+        }
 
         Transaction transaction = new Transaction();
         transaction.setTypeTransfert(transactionDto.getTypeTransfert());
         transaction.setNotification(transactionDto.isNotification());
-        transaction.setFraitDonneur(transactionDto.getFraitDonneur());
-        transaction.setFraitBeneficiaire(transactionDto.getFraitBeneficiaire());
+        transaction.setFraitTransfert(transactionDto.getFraitTransfert());
         transaction.setNumTele(transactionDto.getNumTele());
         transaction.setMontant(transactionDto.getMontant());
         transaction.setNomBeneficiaire(transactionDto.getNomBeneficiaire());
         transaction.setPrenomBeneficiaire(transactionDto.getPrenomBeneficiaire());
         transaction.setNumGSMBeneficiaire(transactionDto.getNumGSMBeneficiaire());
-        transaction.setOTP(transactionDto.getOTP());
+        transaction.setOtp(transactionDto.getOtp());
         transaction.setDate(transactionDto.getDate());
 
         Transaction addedTr = transactionRepository.save(transaction);
         return TransactionMapper.mapToDto(addedTr);
     }
 
-    public void ChangerSolde(TransactionDto transactionDto){
+    public void EditClientSolde(TransactionDto transactionDto){
         Client client = clientRepository.findClientByGsm(transactionDto.getNumTele());
-        Double soldeAct = Double.parseDouble(client.getSolde());
+        String soldeClient = client.getComptePaiement().getSolde();
+        Double soldeAct = Double.parseDouble(soldeClient);
         Double montant = transactionDto.getMontant();
-        if((soldeAct - montant)>=0){
-            client.setSolde(Double.toString(soldeAct - montant));
+        Double fraitTransfert = transactionDto.getFraitTransfert();
+        if((soldeAct - montant - fraitTransfert)>=0){
+            client.getComptePaiement().setSolde(Double.toString(soldeAct - montant - fraitTransfert));
         }else{
             throw new SoldeInsuffisantException("Votre solde est insuffisant");
+        }
+    }
+    //For espece
+    public void EditAgentSolde(TransactionDto transactionDto){
+        Client client = clientRepository.findClientByCin(transactionDto.getCin());
+        Double soldeAct = Double.parseDouble(transactionDto.getAgent().getMontant());
+        Double montant = transactionDto.getMontant();
+        if((soldeAct - montant)>=0){
+            transactionDto.getAgent().setMontant(Double.toString(soldeAct - montant));
+        }else{
+            throw new SoldeInsuffisantException("le solde de l'agence est insuffisant");
         }
     }
 }

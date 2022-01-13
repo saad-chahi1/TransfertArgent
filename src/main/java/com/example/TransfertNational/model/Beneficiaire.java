@@ -13,9 +13,9 @@ import javax.persistence.*;
 @ToString
 public class Beneficiaire {
     @Id
-    private int Id;
-    private String Nom;
-    private String Prenom;
-    private String GSM;
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    private String nom;
+    private String prenom;
+    private String gsm;
 }

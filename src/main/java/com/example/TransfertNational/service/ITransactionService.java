@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ITransactionService {
     List<TransactionDto> getTransactions();
-    TransactionDto getTransaction(int Id);
+    TransactionDto getTransaction(int id);
+    TransactionDto getTransactionByOtp(String otp);
     TransactionDto postTransaction(TransactionDto transactionDto) throws Exception, SoldeInsuffisantException;
 }
