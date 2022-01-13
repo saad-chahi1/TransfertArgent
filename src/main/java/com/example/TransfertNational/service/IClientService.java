@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IClientService {
     List<ClientDto> getClients();
-    ClientDto getClient(int Id);
-    ClientDto getClientByCin(String Cin);
-    ClientDto getClientByGsm(String Gsm);
+    ClientDto getClient(int id);
+    ClientDto getClientByCin(String cin);
+    ClientDto getClientByGsm(String gsm);
     ClientDto postClient(ClientDto clientDto) throws Exception;
 }

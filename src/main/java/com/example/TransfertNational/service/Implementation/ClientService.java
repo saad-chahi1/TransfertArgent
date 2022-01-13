@@ -2,9 +2,7 @@ package com.example.TransfertNational.service.Implementation;
 
 import com.example.TransfertNational.dto.ClientDto;
 import com.example.TransfertNational.mapper.ClientMapper;
-import com.example.TransfertNational.mapper.TransactionMapper;
 import com.example.TransfertNational.model.Client;
-import com.example.TransfertNational.model.Transaction;
 import com.example.TransfertNational.repository.ClientRepository;
 import com.example.TransfertNational.service.IClientService;
 import org.springframework.stereotype.Service;
@@ -60,6 +58,9 @@ public class ClientService implements IClientService {
         client.setProfession(clientDto.getProfession());
         client.setSexe(clientDto.getSexe());
         client.setVille(clientDto.getVille());
+        client.setTypePiece(clientDto.getTypePiece());
+        client.setTypePieceIdentite(clientDto.getTypePieceIdentite());
+        client.setValiditePI(clientDto.getValiditePI());
 
         Client addedCr = clientRepository.save(client);
         return ClientMapper.mapToDto(addedCr);

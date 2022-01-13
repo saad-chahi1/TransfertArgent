@@ -10,17 +10,19 @@ public class TransactionMapper {
     public static TransactionDto mapToDto(Transaction transaction) {
 
         TransactionDto transactionDto = TransactionDto.builder()
-                .Date(transaction.getDate())
-                .Montant(transaction.getMontant())
-                .FraitBeneficiaire(transaction.getFraitBeneficiaire())
-                .TypeTransfert(transaction.getTypeTransfert())
-                .FraitDonneur(transaction.getFraitDonneur())
-                .NomBeneficiaire(transaction.getNomBeneficiaire())
-                .Notification(transaction.isNotification())
-                .NumGSMBeneficiaire(transaction.getNumTele())
-                .NumTele(transaction.getNumTele())
-                .OTP(transaction.getOTP())
-                .PrenomBeneficiaire(transaction.getPrenomBeneficiaire())
+                .date(transaction.getDate())
+                .montant(transaction.getMontant())
+                .fraitTransfert(transaction.getFraitTransfert())
+                .cin(transaction.getCin())
+                .typeTransfert(transaction.getTypeTransfert())
+                .nomBeneficiaire(transaction.getNomBeneficiaire())
+                .notification(transaction.isNotification())
+                .numGSMBeneficiaire(transaction.getNumTele())
+                .numTele(transaction.getNumTele())
+                .otp(transaction.getOtp())
+                .prenomBeneficiaire(transaction.getPrenomBeneficiaire())
+                .status(transaction.getStatus())
+                .agent(transaction.getAgent())
                 .build();
 
         return transactionDto;
